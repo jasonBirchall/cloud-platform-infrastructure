@@ -26,6 +26,7 @@ describe "external DNS", "live-1": true do
 
   context "when zone matches ingress domain" do
     before do
+      cleanup_zone(domain, namespace, ingress_name)
       create_namespace(namespace)
     end
 
