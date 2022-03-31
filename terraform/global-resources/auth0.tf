@@ -45,3 +45,24 @@ resource "auth0_rule_config" "aws-saml-role-prefix" {
   value = "saml-github."
 }
 
+resource "auth0_client" "management" {
+  name        = "management:actions"
+  description = "Cloud Platform Actions"
+  app_type    = "non_interactive"
+
+  custom_login_page_on = true
+  is_first_party       = true
+  oidc_conformant      = true
+  sso                  = true
+
+  jwt_configuration {
+    alg                 = "RS256"
+    lifetime_in_seconds = "2592000"
+  }
+}
+
+resource "auth0_client_grant" "management_grant" {
+  client_id = auth0_client.my_client.id
+  audience  = "https://moj-cloud-platforms-dev.eu.auth0.com/api/v2/"
+  scope     = ["create:"]
+}
